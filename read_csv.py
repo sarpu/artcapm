@@ -58,7 +58,7 @@ def year_range(years):
     return int(my_median)
 
 def artist_dict():
-    with open(os.path.join(sys.path[0], 'Sothebys.csv'), 'rU') as csvfile:
+    with open(os.path.join(sys.path[0], 'sothebys0715.csv'), 'rU') as csvfile:
         my_file = csv.reader(csvfile, delimiter=',')
         artist_dict = dict()
 
