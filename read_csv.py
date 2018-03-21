@@ -1,4 +1,6 @@
 import csv, os, sys
+import numpy as np
+import matplotlib.pyplot as plt
 from operator import itemgetter
 from numpy import median
 
@@ -71,7 +73,7 @@ def artist_dict():
         sorted_list = sorted(my_list, key=itemgetter(1), reverse=True)
         twenty = sorted_list[:20]
         for artist in twenty:
-            print artist[0]
+            #print artist[0]
             my_year = year_range([row[4] for row in my_dict[artist[0]]["rows"]])
             #print my_year
             for row in my_dict[artist[0]]["rows"]:
@@ -96,4 +98,30 @@ def artist_dict():
 
 
 my_dict = artist_dict()
-print my_dict
+Beta_keys = my_dict['Pablo Picasso']['20']['early'].keys()
+TimeSeries=[]
+for item in Beta_keys:
+    print item
+    TimeSeries.append((my_dict['Pablo Picasso']['20']['early'][item]['sale'], int(my_dict['Pablo Picasso']['20']['early'][item]['price'])))
+
+medianDict=dict()
+for cell in TimeSeries:
+    if cell[0] in medianDict:
+        medianDict[cell[0]].append(cell[1])
+    else:
+        medianDict[cell[0]]=[cell[1]]
+
+print medianDict
+TimeSeries=[]
+for item in medianDict:
+    myList=medianDict[item]
+    myMed = median(myList)
+    TimeSeries.append([item,myMed])
+    print myMed
+    
+print TimeSeries
+min_y=sorted(TimeSeries, key=itemgetter(1))[0][1]
+max_y=sorted(TimeSeries, key=itemgetter(1))[-1][1]
+print max_y
+plt.scatter(*zip(*TimeSeries))
+#plt.yticks(np.arange(min_y, max_y, 100000))
